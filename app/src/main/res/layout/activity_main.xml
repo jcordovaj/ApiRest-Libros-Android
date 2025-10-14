@@ -18,16 +18,17 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="#80410F99"
+        android:fontFamily="sans-serif-medium"
+        android:padding="8dp"
         android:text="Pelotillehue Public Library"
         android:textColor="#FFFFFF"
-        android:background="#80000000"
-        android:padding="8dp"
         android:textSize="24sp"
-        android:fontFamily="sans-serif-medium"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp" />
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etQuery"
@@ -62,7 +63,7 @@
             android:layout_height="wrap_content"
             android:text="Buscar por Título"
             android:checked="true"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:buttonTint="#FFFFFF"
             android:layout_marginEnd="16dp" />
 
@@ -71,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Buscar por Autor"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:buttonTint="#FFFFFF" />
 
     </RadioGroup>
@@ -124,7 +125,7 @@
         android:layout_height="wrap_content"
         android:text="Estado de la Consulta"
         android:textColor="#FFFFFF"
-        android:background="#80000000"
+        android:background="#80410F99"
         android:padding="4dp"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"

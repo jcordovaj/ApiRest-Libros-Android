@@ -11,15 +11,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import android.util.Log
-// import com.example.apibooks.BookRepository
-// import com.example.apibooks.BookDisplay
 
 class BookViewModel(private val repository: BookRepository) : ViewModel() {
-
     // LiveData para observar el estado de la UI en la Activity
     val books: MutableLiveData<List<BookDisplay>> = MutableLiveData()
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-    val statusMessage: MutableLiveData<String> = MutableLiveData("Biblioteca Pelotillehue 🏛️: Ingrese un título o autor.")
+    val statusMessage: MutableLiveData<String> = MutableLiveData("Ingrese un título o autor.")
 
     private var currentJob: Job? = null // Para el control de cancelación
 
@@ -56,7 +53,7 @@ class BookViewModel(private val repository: BookRepository) : ViewModel() {
 
                     // Tarea fake paralela
                     val parallelTask = async {
-                        delay(2000)
+                        delay(3000)
                         "Tarea fake paralela de simulación de carga terminada."
                     }
 
