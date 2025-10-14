@@ -15,26 +15,26 @@ import android.util.Log
 class BookViewModel(private val repository: BookRepository) : ViewModel() {
     // LiveData para observar el estado de la UI en la Activity
     val books: MutableLiveData<List<BookDisplay>> = MutableLiveData()
-    val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-    val statusMessage: MutableLiveData<String> = MutableLiveData("Ingrese un título o autor.")
+    val isLoading: MutableLiveData<Boolean>       = MutableLiveData(false)
+    val statusMessage: MutableLiveData<String>    = MutableLiveData("Ingrese un título o autor.")
 
     private var currentJob: Job? = null // Para el control de cancelación
 
     /**
      * Inicia la búsqueda de libros, usando Coroutines.
-     * Mantiene la misma estructura de concurrencia (async/await) para la demostración.
+     * Mantiene la misma estructura de concurrencia (async/await) de la versión con ApiClima.
      * @param searchType Criterio de búsqueda (título o autor).
      * @param query La palabra clave a buscar.
      */
     fun searchBooks(searchType: String, query: String) {
-        // Cancelar cualquier Job activo antes de iniciar uno nuevo
+        // Cancela Job activo antes de iniciar uno nuevo
         currentJob?.cancel()
 
         // Formato de query para Google Books API: intitle: o inauthor:
         val apiQuery = when(searchType) {
             "title" -> "intitle:$query"
             "author" -> "inauthor:$query"
-            else -> query // Por defecto, búsqueda general
+            else -> query // Por defecto
         }
 
         // 'launch' en el viewModelScope. El Job se cancela automáticamente cuando el ViewModel se limpia (onCleared()).
@@ -46,24 +46,24 @@ class BookViewModel(private val repository: BookRepository) : ViewModel() {
                 // Tarea en 2do. plano. Llama a la función suspendida del Repositorio, que se ejecuta en el hilo IO
                 val result = withContext(Dispatchers.IO) {
 
-                    // Emulación de proceso paralelo (manteniendo la lógica del ejemplo base)
+                    // Simula proceso paralelo (manteniendo la lógica del caso ApiClima)
                     val apiCall = async {
-                        repository.searchBooksAndProcess(apiQuery) // Tarea asíncrona principal
+                        repository.searchBooksAndProcess(apiQuery) // Esta es la tarea asíncrona principal
                     }
 
                     // Tarea fake paralela
                     val parallelTask = async {
                         delay(3000)
-                        "Tarea fake paralela de simulación de carga terminada."
+                        "Simulación de tarea de carga paralela terminada."
                     }
 
                     Log.d("Coroutines", parallelTask.await())
-                    apiCall.await() // Acá espera el resultado de la llamada al Repositorio
+                    apiCall.await() // Acá se espera el resultado de la llamada
                 }
 
-                // El código después de withContext se reanuda en el hilo principal (Main)
+                // El código, después de withContext, se reanuda en el hilo principal (Main)
                 if (result.isNotEmpty()) {
-                    books.value = result // Actualiza LiveData
+                    books.value         = result // Aquí actualiza LiveData
                     statusMessage.value = "✅ Se encontraron ${result.size} libros para \"$query\"."
                 } else {
                     books.value = emptyList()
@@ -71,12 +71,12 @@ class BookViewModel(private val repository: BookRepository) : ViewModel() {
                 }
 
             } catch (e: CancellationException) {
-                // Se captura si el Job se cancela (ej: por una nueva búsqueda o si el usuario cancela)
-                Log.e("APIBooks", "La solicitud fue cancelada.")
+                // Se captura el log si el Job se cancela, por ejemplo,  por una nueva búsqueda o si el usuario cancela (manualmente)
+                Log.e("APIBooks", "Solicitud cancelada.")
                 statusMessage.value = "Búsqueda cancelada 🚫"
             } catch (e: Exception) {
-                // Errores de red, parseo, etc.
-                Log.e("APIBooks", "Error al obtener libros: ${e.message}")
+                // Otros errores, ejemplo, red, parseo, etc.
+                Log.e("APIBooks", "Error al intentar obtener libros: ${e.message}")
                 statusMessage.value = "❌ Error: La consulta falló. ${e.message}"
             } finally {
                 isLoading.value = false
@@ -84,30 +84,15 @@ class BookViewModel(private val repository: BookRepository) : ViewModel() {
         }
     }
 
-    /**
-     * Función para cancelar manualmente el Job (si el usuario presiona Cancelar).
-     */
+    // Función que cancela manualmente el Job (si el usuario presiona 'X', antes de los 3 seg.).
     fun cancelCurrentSearch() {
         if (currentJob?.isActive == true) {
             currentJob?.cancel()
         }
     }
 
-    /**
-     * Mantiene la capacidad de la aplicación de base de crear un nuevo Job si se canceló.
-     * Aunque en ViewModelScope no es estrictamente necesario ya que la cancelación
-     * del job actual antes de lanzar uno nuevo ya maneja el estado.
-     */
-    // No necesitamos re-crear el Job. viewModelScope.launch() crea uno nuevo si el anterior terminó/canceló.
-    // Simplemente nos aseguramos de cancelar el previo con cancelCurrentSearch().
-
-    // El Job se cancela automáticamente en onCleared() del ViewModel,
-    // que se llama cuando la Activity/Fragment se destruye permanentemente.
-    // Esto reemplaza el job.cancel() en onDestroy() o onStop() de la Activity.
     override fun onCleared() {
         super.onCleared()
-        // No es necesario llamar explícitamente a currentJob?.cancel() aquí, ya que viewModelScope se encarga,
-        // pero lo mantenemos para ser explícitos si fuera un scope custom.
         currentJob?.cancel()
     }
 }

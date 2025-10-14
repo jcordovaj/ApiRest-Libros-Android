@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- * Adapter para mostrar la lista de BookDisplay en RecyclerView.
- * Usa ListAdapter con DiffUtil para actualizaciones eficientes.
+ * Adapter para mostrar la lista de BookDisplay en el RecyclerView.
+ * Usa ListAdapter con DiffUtil para las actualizaciones.
  */
-class BookAdapter : ListAdapter<BookDisplay, BookAdapter.BookViewHolder>(BookDiffCallback()) {
+class BookAdapter : ListAdapter<BookDisplay,
+        BookAdapter.BookViewHolder>(BookDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
-        // Infla el layout de un ítem de libro (requiere item_book.xml)
+        // Para mostrar los libros, inflamos el layout de cada libro usando item_book.xml
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_book, parent, false)
         return BookViewHolder(view)
@@ -27,13 +28,12 @@ class BookAdapter : ListAdapter<BookDisplay, BookAdapter.BookViewHolder>(BookDif
     }
 
     class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // IDs de TextViews en item_book.xml (a definir)
-        private val tvTitle: TextView = itemView.findViewById(R.id.tvBookTitle)
-        private val tvAuthor: TextView = itemView.findViewById(R.id.tvBookAuthor)
+        private val tvTitle       : TextView = itemView.findViewById(R.id.tvBookTitle)
+        private val tvAuthor      : TextView = itemView.findViewById(R.id.tvBookAuthor)
         private val tvAvailability: TextView = itemView.findViewById(R.id.tvBookAvailability)
 
         fun bind(book: BookDisplay) {
-            tvTitle.text = book.title
+            tvTitle.text  = book.title
             tvAuthor.text = "Autor(es): ${book.authors}"
 
             val availabilityText = if (book.isAvailable) {
@@ -46,9 +46,7 @@ class BookAdapter : ListAdapter<BookDisplay, BookAdapter.BookViewHolder>(BookDif
     }
 }
 
-/**
- * Callback para calcular las diferencias entre listas (optimización de RecyclerView).
- */
+// Callback para calcular las diferencias entre listas, permite optimizar los RecyclerView.
 class BookDiffCallback : DiffUtil.ItemCallback<BookDisplay>() {
     override fun areItemsTheSame(oldItem: BookDisplay, newItem: BookDisplay): Boolean {
         return oldItem.id == newItem.id

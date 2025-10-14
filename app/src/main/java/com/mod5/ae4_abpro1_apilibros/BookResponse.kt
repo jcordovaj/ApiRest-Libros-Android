@@ -16,9 +16,7 @@ data class VolumeInfo(
     val description: String?
 )
 
-/**
- * Data Class para mostrar en la lista final, añadiendo la lógica de negocio simulada.
- */
+// Data Class para mostrar en la lista final, incluye datos fake.
 data class BookDisplay(
     val id: String,
     val title: String,
