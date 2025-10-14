@@ -88,7 +88,7 @@ La aplicación es un prototipo funcional para demostrar las capacidades arquitec
   <img src="scrapbook/pantalla_inicial_books.png" alt="Pantalla inicial de búsqueda" width="150"/>  
   <img src="scrapbook/busqueda_por_autor.png" alt="Búsqueda por Autor" width="150"/>
   <img src="scrapbook/resultados_lista.png" alt="Lista de resultados en RecyclerView" width="150"/>
-  <img src="scrapbook/busqueda_por_titulo.png" alt="Barra de progreso activa" width="150"/>
+  <img src="scrapbook/busqueda_por_titulo.png" alt="Búsqueda por título" width="150"/>
   <img src="scrapbook/simulacion_disponibilidad.png" alt="Simulación de disponibilidad" width="150"/>
 </p>
 
