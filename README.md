@@ -1,4 +1,4 @@
-# CASO AE4-AB1: APIBOOKS V1 - ARQUITECTURA MVVM, COROUTINES, RETROFIT Y GESTIÓN DE JOB
+# APIBOOKS V1 - ARQUITECTURA MVVM, COROUTINES, RETROFIT Y GESTIÓN DE JOB
 
 <p float="center">
   <img src="scrapbook/perasconmanzanas_icon.png" alt="Logo" width="200"/>
